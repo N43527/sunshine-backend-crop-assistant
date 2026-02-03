@@ -39,6 +39,7 @@ def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
         chatMessages = [{"role": "system", "content": "You are a helpful assistant."}]
         for p in prompt:
             chatMessages.append(p)
+        print(chatMessages)
 
         # Call Azure OpenAI
         response = client.chat.completions.create(
