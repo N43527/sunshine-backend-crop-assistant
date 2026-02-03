@@ -27,7 +27,7 @@ def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
     try:
         # Get the prompt from JSON body
         req_body = req.get_json()
-        prompt = req_body.get("prompt", "")
+        prompt = req_body.get("conversation", "")
 
         if not prompt:
             return func.HttpResponse(
@@ -35,14 +35,16 @@ def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=400,
                 mimetype="application/json"
             )
+        
+        chatMessages = [{"role": "system", "content": "You are a helpful assistant."}]
+        for p in prompt:
+            chatMessages.append(p)
+        print(chatMessages)
 
         # Call Azure OpenAI
         response = client.chat.completions.create(
             model=AOAI_DEPLOYMENT,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
-            ]
+            messages=chatMessages
         )
 
         reply = response.choices[0].message.content
