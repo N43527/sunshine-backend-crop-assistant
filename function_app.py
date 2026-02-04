@@ -36,7 +36,7 @@ def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
                 mimetype="application/json"
             )
         
-        chatMessages = [{"role": "system", "content": "You are a helpful assistant."}]
+        chatMessages = [{"role": "system", "content": "You are an AI crop assistant who really like to gives meaningful crop suggestions."}]
         for p in prompt:
             chatMessages.append(p)
         print(chatMessages)
