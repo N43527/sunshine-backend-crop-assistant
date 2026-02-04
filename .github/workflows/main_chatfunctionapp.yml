@@ -84,4 +84,8 @@ jobs:
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           scm-do-build-during-deployment: true
           enable-oryx-build: true
+
+      - name: 'Configure CORS'
+        run: |
+          az functionapp cors add --name chatFunctionApp --resource-group sunshineAgrisolar_WestUS3 --allowed-origins '*'
           
