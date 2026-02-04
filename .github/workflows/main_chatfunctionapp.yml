@@ -87,5 +87,10 @@ jobs:
 
       - name: 'Configure CORS'
         run: |
-          az functionapp cors add --name chatFunctionApp --resource-group sunshineAgrisolar_WestUS3 --allowed-origins '*'
+          # Remove all existing CORS origins
+          az functionapp cors remove --name chatFunctionApp --resource-group sunshineAgrisolar_WestUS3 --allowed-origins '*' || true
+          # Add the specific origin
+          az functionapp cors add --name chatFunctionApp --resource-group sunshineAgrisolar_WestUS3 --allowed-origins 'https://red-meadow-0c36c6e0f.3.azurestaticapps.net'
+          # Enable credentials support
+          az functionapp config appsettings set --name chatFunctionApp --resource-group sunshineAgrisolar_WestUS3 --settings CORS_SUPPORT_CREDENTIALS=true
           
