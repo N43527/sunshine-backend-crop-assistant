@@ -20,30 +20,9 @@ client = AzureOpenAI(
     api_version=AOAI_API_VERSION
 )
 
-ALLOWED_ORIGINS = [
-    "https://red-meadow-0c36c6e0f.3.azurestaticapps.net",
-    "http://localhost:5173",  # For local dev
-]
-
-def get_cors_headers(req: func.HttpRequest) -> dict:
-    origin = req.headers.get("Origin", "")
-    if origin in ALLOWED_ORIGINS:
-        return {
-            "Access-Control-Allow-Origin": origin,
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
-        }
-    return {}
-
-@app.route(route="HTTPTriggerAI2", methods=["POST", "OPTIONS"])
+@app.route(route="HTTPTriggerAI2", methods=["POST"])
 def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
     logging.info("Python HTTP trigger function processed a request.")
-    
-    cors_headers = get_cors_headers(req)
-    
-    # Handle preflight OPTIONS request
-    if req.method == "OPTIONS":
-        return func.HttpResponse(status_code=204, headers=cors_headers)
 
     try:
         # Get the prompt from JSON body
@@ -74,8 +53,7 @@ def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(
             json.dumps({"reply": reply}),
             status_code=200,
-            mimetype="application/json",
-            headers=cors_headers
+            mimetype="application/json"
         )
 
     except Exception as e:
@@ -83,6 +61,5 @@ def HTTPTriggerAI2(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(
             json.dumps({"error": str(e)}),
             status_code=500,
-            mimetype="application/json",
-            headers=cors_headers
+            mimetype="application/json"
         )
