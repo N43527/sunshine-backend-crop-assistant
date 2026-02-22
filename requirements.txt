@@ -4,4 +4,9 @@
 
 azure-functions
 openai
+<<<<<<< HEAD
 
+=======
+pyodbc
+dotenv
+>>>>>>> 6434931 (feat/fix: update connect.py, add create.py, database/README.md)
